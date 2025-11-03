@@ -1,67 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Poultry Defect Detection</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel = "stylesheet" href = "{{ url_for('static', filename = 'styles.css') }}">
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
+  <aside class = "sidebar">
+    <div class = "sidebar-header">
       <h2>Poultry Defect Detection (Model Name Here)</h2>
     </div>
-    <ul class="sidebar-nav">
-      <li><a href="#" class="active">Dashboard</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="#">Profile</a></li>
+    <ul class = "sidebar-nav">
+      <li><a href = "#" class="active">Dashboard</a></li>
+      <li><a href = "#">Settings</a></li>
+      <li><a href = "#">Profile</a></li>
     </ul>
   </aside>
 
-  <main class="main-content">
+  <main class = "main-content">
     <h1>Welcome to the Dashboard</h1>
     <p>This is a prototype, other possible functionalities such as sign-in as well as the sidebar will not be working...</p>
     
-    <div class="placeholder-box">
+    <div class = "placeholder-box">
       <h3>Upload Images</h3>
       <p>upload a maximum of 10 images. Only 'png', 'jpg', 'jpeg' are allowed</p>
       
-      <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+      <form action = "{{ url_for('upload') }}" method = "POST" enctype = "multipart/form-data">
           
-        <div class="form-group">
-          <label for="image-upload" class="file-label">Choose Images</label>
-          <input type="file" 
-                 id="image-upload" 
-                 name="user_images" 
+        <div class = "form-group">
+          <label for = "image-upload" class = "file-label">Choose Images</label>
+          <input type = "file" 
+                 id = "image-upload" 
+                 name = "user_images" 
                  multiple 
-                 accept="image/*"
-                 onchange="previewImages()"> </div>
+                 accept = "image/*"
+                 onchange = "previewImages()"> </div>
 
-        <button type="submit" class="upload-btn">Upload/Clear</button>
+        <button type = "submit" class="upload-btn">Upload</button>
       </form>
 
       {% if error %}
-      <p style="color: red; margin-top: 10px;">{{ error }}</p>
+      <p style = "color: red; margin-top: 10px;">{{ error }}</p>
       {% endif %}
 
     </div>
     
-    <div class="placeholder-box">
+    <div class = "placeholder-box">
       <h3>Detection Output</h3>
+      {% if detection_time %}
+        <p style = "color: green; font-weight: bold;">
+          Total detection time: {{ detection_time }} seconds
+        </p>
+      {% endif %}
       <p>Each image will be returned here after processing using the model.</p>
-      <p>press the button above again to clear the detections below</p>
+      <form action = "{{ url_for('clear_outputs') }}" method = "POST" style = "margin-top: 10px;">
+        <button type = "submit" class = "upload-btn" style = "background-color: #e74c3c;">
+          Clear Outputs
+        </button>
+      </form>
       
-      <div class="image-output-grid">
+      <div class = "image-output-grid">
         {% if uploaded_images %}
           {% for image_url in uploaded_images %}
-          <div class="output-item">
-            <img src="{{ image_url }}" alt="Uploaded Image" class="output-image">
-            <p class="image-label">Detection Result (Future)</p>
+          <div class = "output-item">
+            <img src = "{{ image_url }}" alt = "Uploaded Image" class = "output-image">
+            <p class = "image-label">Detection Result (Future)</p>
           </div>
           {% endfor %}
         {% else %}
-          <p class="no-images-msg">No images uploaded yet.</p>
+          <p class = "no-images-msg">No images uploaded yet.</p>
         {% endif %}
       </div>
 
